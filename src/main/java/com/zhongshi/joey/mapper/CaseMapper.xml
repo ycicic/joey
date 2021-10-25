@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhongshi.joey.mapper.CaseMapper">
+
+    <resultMap id="caseMap" type="com.zhongshi.joey.entity.Case">
+        <id column="case_id" property="caseId" jdbcType="INTEGER"/>
+        <result column="group_module" property="groupModule"/>
+        <result column="group_comment" property="groupComment"/>
+        <result column="case_comment" property="caseComment"/>
+        <result column="protocol_type" property="protocolType"/>
+        <result column="request_data" property="requestData"/>
+        <result column="is_cache" property="isCache"/>
+        <collection column="host_id" property="httpProtocol" select="selectHttpProtocol"/>
+    </resultMap>
+
+    <select id="queryCaseByModule" resultMap="caseMap">
+        select cd.id as case_id,
+        cg.module as group_module,
+        cg.comment as group_comment,
+        cd.comment as case_comment,
+        cd.case_type as case_type,
+        cd.protocol_type as protocol_type,
+        cd.request_data as request_data,
+        cd.host_id as host_id,
+        cd.is_cache as is_cache
+        from case_group cg,
+        case_detail cd
+        where cg.id = cd.group_id
+        and cg.is_run = true
+        and cg.deleted = false
+        and cd.is_run = true
+        and cd.deleted = false
+        <if test="null != module and '' != module">
+            and cg.module = #{module}
+        </if>
+        <if test="null != caseType and '' != caseType">
+            and cd.case_type = #{caseType}
+        </if>
+
+    </select>
+
+    <select id="selectHttpProtocol" resultType="com.zhongshi.joey.entity.HttpProtocol">
+        select ch.host                                                                                    as host,
+               concat(ch.protocol, '://', ch.host, if(ch.port is null, '', concat(':', ch.port)), ca.api) as url,
+               request_method                                                                             as method,
+               request_data_type                                                                          as data_type
+        from case_host ch,
+             case_api ca
+        where ch.id = ca.host_id
+          and ca.id = #{id}
+    </select>
+</mapper>
