@@ -38,7 +38,6 @@ public class HttpCaseProcessorServiceImpl implements CaseProcessorService {
         JSONObject headerObj = requestData.getJSONObject("header");
         JSONObject dataObj = requestData.getJSONObject("data");
 
-
         RequestSpecification request = RestAssured.given().contentType(dataType.toString()).request();
 
         if (null != headerObj) {
