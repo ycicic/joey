@@ -23,6 +23,9 @@ public class BaseTest {
 
     @SneakyThrows
     protected void assertCase(String preResults, String exec) {
+        if (StringUtils.isEmpty(preResults)) {
+            return;
+        }
         JSONObject object = JSONObject.parseObject(exec);
         String[] preResult = preResults.split(";");
         for (String s : preResult) {
