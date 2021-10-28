@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CaseProcessorFacade {
 
-    public Object exec(Case testCase) {
+    public String exec(Case testCase) {
         String requestData = BuildDataUtil.buildRequestData(testCase.getRequestData());
         testCase.setRequestData(requestData);
         return CaseProcessorFactory.getService(testCase.getProtocolType()).exec(testCase);

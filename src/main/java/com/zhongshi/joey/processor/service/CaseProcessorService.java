@@ -14,5 +14,5 @@ public interface CaseProcessorService {
      * @param testCase 用例
      * @return obj
      */
-    Object exec(Case testCase);
+    String exec(Case testCase);
 }

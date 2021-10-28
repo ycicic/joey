@@ -29,6 +29,8 @@ public class Case implements Serializable {
 
     private String requestData;
 
+    private String preResult;
+
     private HttpProtocol httpProtocol;
 
     private Boolean isCache;

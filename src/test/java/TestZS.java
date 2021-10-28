@@ -14,15 +14,17 @@ public class TestZS extends BaseTest {
     @Test(dataProvider = "beforeParticipate", dataProviderClass = DataProviders.class, priority = 1)
     public void before(Case testCase) {
         log.info("[{}]开始执行：{}", testCase.getCaseType(), testCase);
-        Object exec = new CaseProcessorFacade().exec(testCase);
+        String exec = new CaseProcessorFacade().exec(testCase);
         log.info("[{}]执行结果：{}", testCase.getCaseType(), exec);
+        assertCase(testCase.getPreResult(), exec);
     }
 
     @Test(dataProvider = "participate", dataProviderClass = DataProviders.class, priority = 2)
     public void test(Case testCase) {
         log.info("[{}]开始执行：{}", testCase.getCaseType(), testCase);
-        Object exec = new CaseProcessorFacade().exec(testCase);
+        String exec = new CaseProcessorFacade().exec(testCase);
         log.info("[{}]执行结果：{}", testCase.getCaseType(), exec);
+        assertCase(testCase.getPreResult(), exec);
         //TODO 响应报文断言断言
         //TODO 数据库断言
     }

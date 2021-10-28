@@ -11,6 +11,7 @@
         <result column="case_comment" property="caseComment"/>
         <result column="protocol_type" property="protocolType"/>
         <result column="request_data" property="requestData"/>
+        <result column="pre_result" property="preResult"/>
         <result column="is_cache" property="isCache"/>
         <collection column="host_id" property="httpProtocol" select="selectHttpProtocol"/>
     </resultMap>
@@ -23,6 +24,7 @@
         cd.case_type as case_type,
         cd.protocol_type as protocol_type,
         cd.request_data as request_data,
+        cd.pre_result as pre_result,
         cd.host_id as host_id,
         cd.is_cache as is_cache
         from case_group cg,
