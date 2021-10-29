@@ -28,7 +28,7 @@ public class HttpCaseProcessorServiceImpl implements CaseProcessorService {
     @SneakyThrows
     @Override
     public String exec(Case testCase) {
-        Allure.step("处理HTTP用例");
+        Allure.step("执行HTTP用例");
         Boolean isCache = testCase.getIsCache();
         HttpProtocol httpProtocol = testCase.getHttpProtocol();
         JSONObject requestData = JSONObject.parseObject(testCase.getRequestData());
@@ -76,6 +76,7 @@ public class HttpCaseProcessorServiceImpl implements CaseProcessorService {
         }
 
         if (isCache) {
+            Allure.step("缓存用例结果");
             log.debug("缓存用例结果: {},{}", testCase.getCaseId(), res);
             CaseResponseCache.CACHE.put(testCase.getCaseId(), res);
         }
