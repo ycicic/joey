@@ -8,7 +8,9 @@ import com.zhongshi.joey.entity.Case;
 import com.zhongshi.joey.entity.ExecutionOrder;
 import com.zhongshi.joey.exception.JoeyException;
 import com.zhongshi.joey.mapper.CaseMapper;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
+import io.qameta.allure.model.Status;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -34,14 +36,15 @@ public class BaseTest {
     protected static final Queue<Case> CASE_QUEUE = new LinkedList<>();
     private static final Pattern PRE_PATTERN = Pattern.compile("^(\\$\\.)?([\\w.]*)(=|>|<|!=)\"(.*)\"$");
 
-    @Step("测试套件执行前准备-装载测试用例至用例执行队列")
     @BeforeSuite
     protected void caseLoading() {
+        Allure.step("测试套件执行前准备-装载测试用例至用例执行队列");
         log.info("测试套件执行前准备-装载测试用例至用例执行队列");
         String workflowId = System.getProperty("workflowId");
 
         if (StringUtils.isEmpty(workflowId)) {
-            throw new JoeyException("用例工作流ID确实，请检查参数");
+            Allure.step("用例工作流ID缺失，请检查参数", Status.FAILED);
+            throw new JoeyException("用例工作流ID缺失，请检查参数");
         }
 
         SqlSessionFactory sqlSessionFactory = MybatisConfig.getSqlSessionFactory();
@@ -64,6 +67,7 @@ public class BaseTest {
             log.info("添加到执行队列[{}]：{}", order, aCase);
         });
 
+        Allure.step("用例执行队列装载完成-共需要执行" + CASE_QUEUE.size() + "条用例");
     }
 
     @SneakyThrows
@@ -78,8 +82,8 @@ public class BaseTest {
         }
     }
 
-    @Step("断言：{0} --> {1}")
     private void dataAssertion(JSONObject object, String s) throws Exception {
+        Allure.step("断言：[" + object + "] --> [" + s + "]");
         Matcher matcher = PRE_PATTERN.matcher(s);
         if (matcher.find()) {
             Object obj;

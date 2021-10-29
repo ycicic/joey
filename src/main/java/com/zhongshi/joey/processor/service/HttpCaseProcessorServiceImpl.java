@@ -9,7 +9,7 @@ import com.zhongshi.joey.entity.enums.RequestDataType;
 import com.zhongshi.joey.entity.enums.RequestMethod;
 import com.zhongshi.joey.processor.Protocol;
 import com.zhongshi.joey.utils.BuildDataUtil;
-import io.qameta.allure.Step;
+import io.qameta.allure.Allure;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -25,10 +25,10 @@ import lombok.extern.slf4j.Slf4j;
 @Protocol(ProtocolType.HTTP)
 public class HttpCaseProcessorServiceImpl implements CaseProcessorService {
 
-    @Step("处理HTTP用例")
     @SneakyThrows
     @Override
     public String exec(Case testCase) {
+        Allure.step("处理HTTP用例");
         Boolean isCache = testCase.getIsCache();
         HttpProtocol httpProtocol = testCase.getHttpProtocol();
         JSONObject requestData = JSONObject.parseObject(testCase.getRequestData());
