@@ -1,7 +1,6 @@
 package com.zhongshi.joey.entity;
 
 import com.zhongshi.joey.config.MybatisConfig;
-import com.zhongshi.joey.entity.enums.CaseType;
 import com.zhongshi.joey.mapper.CaseMapper;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
@@ -22,26 +21,20 @@ import java.util.List;
 public class DataProviders {
 
     @SneakyThrows
-    @DataProvider(name = "beforeParticipate", parallel = true)
-    public static Object[][] beforeParticipate(Method method) {
-        return getDataForCaseType(CaseType.BEFORE);
-    }
-
-    @SneakyThrows
     @DataProvider(name = "participate", parallel = true)
     public static Object[][] participate(Method method) {
-        return getDataForCaseType(CaseType.DEFAULT);
+        return getDataForCaseType();
     }
 
-    private static Object[][] getDataForCaseType(CaseType caseType) {
-        String module = System.getProperty("module");
+    private static Object[][] getDataForCaseType() {
+        String workflowId = System.getProperty("workflowId");
 
         SqlSessionFactory sqlSessionFactory = MybatisConfig.getSqlSessionFactory();
 
         @Cleanup
         SqlSession sqlSession = sqlSessionFactory.openSession();
         CaseMapper mapper = sqlSession.getMapper(CaseMapper.class);
-        List<Case> cases = mapper.queryCaseByModule(module, caseType.name());
+        List<Case> cases = mapper.queryCaseByModule(workflowId);
 
         Object[][] obj = new Object[cases.size()][1];
 

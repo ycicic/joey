@@ -17,29 +17,25 @@
     </resultMap>
 
     <select id="queryCaseByModule" resultMap="caseMap">
-        select cd.id as case_id,
-        cg.module as group_module,
-        cg.comment as group_comment,
-        cd.comment as case_comment,
-        cd.case_type as case_type,
+        select cd.id            as case_id,
+        cg.module        as group_module,
+        cg.comment       as group_comment,
+        cd.comment       as case_comment,
         cd.protocol_type as protocol_type,
-        cd.request_data as request_data,
-        cd.pre_result as pre_result,
-        cd.host_id as host_id,
-        cd.is_cache as is_cache
-        from case_group cg,
+        cd.request_data  as request_data,
+        cd.pre_result    as pre_result,
+        cd.host_id       as host_id,
+        cd.is_cache      as is_cache
+        from case_workflow cw,
+        case_group cg,
         case_detail cd
-        where cg.id = cd.group_id
+        where cw.group_id = cg.id
+        and cg.id = cd.group_id
         and cg.is_run = true
         and cg.deleted = false
         and cd.is_run = true
         and cd.deleted = false
-        <if test="null != module and '' != module">
-            and cg.module = #{module}
-        </if>
-        <if test="null != caseType and '' != caseType">
-            and cd.case_type = #{caseType}
-        </if>
+        and cw.id = #{workflowId}
 
     </select>
 
@@ -53,4 +49,12 @@
         where ch.id = ca.host_id
           and ca.id = #{id}
     </select>
+    
+    <select id="selectOrder" resultType="java.lang.String">
+        select execution_order
+        from case_workflow
+        where id = #{workflowId}
+    </select>
+
+
 </mapper>

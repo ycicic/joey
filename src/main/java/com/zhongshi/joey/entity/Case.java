@@ -1,6 +1,5 @@
 package com.zhongshi.joey.entity;
 
-import com.zhongshi.joey.entity.enums.CaseType;
 import com.zhongshi.joey.entity.enums.ProtocolType;
 import lombok.Data;
 
@@ -22,8 +21,6 @@ public class Case implements Serializable {
     private String groupComment;
 
     private String caseComment;
-
-    private CaseType caseType;
 
     private ProtocolType protocolType;
 
