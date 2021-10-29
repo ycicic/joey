@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 public class CaseProcessorFacade {
 
     public String exec(Case testCase) {
-        Allure.step("解析请求数据");
         String requestData = BuildDataUtil.buildRequestData(testCase.getRequestData());
         testCase.setRequestData(requestData);
         return CaseProcessorFactory.getService(testCase.getProtocolType()).exec(testCase);

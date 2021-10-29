@@ -35,11 +35,11 @@ public class BuildDataUtil {
             String function = matcher.group();
             String functionName = matcher.group(1);
             String functionParameters = matcher.group(2);
-            Allure.step("执行公共方法：[" + function + "];函数：[" + functionName + "]; 参数：[" + functionParameters + "]");
+            Allure.step("执行公共方法：" + function + ";函数：" + functionName + "; 参数：" + functionParameters);
             log.debug("检测到公共方法：{};函数：{}; 参数：{}", function, functionName, functionParameters);
             String res = FunctionBuildFacade.execute(functionName, new String[]{functionParameters});
             requestData = requestData.replace(function, res);
-            Allure.step("执行参数转换：[" + function + "] --> [" + res + "]");
+            Allure.step("执行参数转换：" + function + " --> " + res);
         }
         return requestData;
     }
@@ -53,13 +53,9 @@ public class BuildDataUtil {
             String data = DataBuildFacade.execute(value);
             requestData = requestData.replace(arg, data);
             log.debug("参数转换完成：{} -> {}", arg, data);
-            Allure.step("执行参数转换：[" + arg + "] --> [" + data + "]");
+            Allure.step("执行参数转换：" + arg + " --> " + data);
         }
         return requestData;
-    }
-
-    public static String parseJson(String json) {
-        return JSONObject.parseObject(json).toJSONString();
     }
 
 }

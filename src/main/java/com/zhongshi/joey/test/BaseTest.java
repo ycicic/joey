@@ -66,9 +66,6 @@ public class BaseTest {
             log.info("添加到执行队列[{}]：{}", order, aCase);
         });
 
-        String groupModule = cases.get(0).getGroupModule();
-        Allure.description(groupModule);
-
         Allure.step("用例执行队列装载完成，共需要执行" + CASE_QUEUE.size() + "条用例");
     }
 
@@ -85,7 +82,7 @@ public class BaseTest {
     }
 
     private void dataAssertion(JSONObject object, String s) throws Exception {
-        Allure.step("断言：[" + object + "] --> [" + s + "]");
+        Allure.step("执行断言：" + s);
         Matcher matcher = PRE_PATTERN.matcher(s);
         if (matcher.find()) {
             Object obj;

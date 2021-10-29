@@ -7,6 +7,8 @@ import io.qameta.allure.Feature;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.Test;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * @author ycc
  */
@@ -17,13 +19,14 @@ public class TestZS extends BaseTest {
     @Description("自动化测试")
     @Test(description = "执行用例")
     public void automation() {
-        int i = 1;
+        AtomicInteger i = new AtomicInteger(1);
         CASE_QUEUE.forEach(testCase -> {
+            Allure.description(testCase.getGroupModule());
             Allure.story(testCase.getCaseComment());
-            Allure.step("开始执行用例[" + i + "]: " + testCase.getCaseComment());
+            Allure.step("[" + i.getAndIncrement() + "] 开始执行用例: " + testCase.getCaseComment());
             log.info("开始执行：{}", testCase);
             String exec = new CaseProcessorFacade().exec(testCase);
-            Allure.step("执行结果：\n" + BuildDataUtil.parseJson(exec));
+            Allure.step("执行结果：" + exec);
             log.info("执行结果：{}", exec);
             assertCase(testCase.getPreResult(), exec);
         });
