@@ -34,7 +34,7 @@ public class DataProviders {
         @Cleanup
         SqlSession sqlSession = sqlSessionFactory.openSession();
         CaseMapper mapper = sqlSession.getMapper(CaseMapper.class);
-        List<Case> cases = mapper.queryCaseByModule(workflowId);
+        List<Case> cases = mapper.queryCaseByWorkflowId(workflowId);
 
         Object[][] obj = new Object[cases.size()][1];
 

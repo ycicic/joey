@@ -16,7 +16,7 @@
         <collection column="host_id" property="httpProtocol" select="selectHttpProtocol"/>
     </resultMap>
 
-    <select id="queryCaseByModule" resultMap="caseMap">
+    <select id="queryCaseByWorkflowId" resultMap="caseMap">
         select cd.id            as case_id,
         cg.module        as group_module,
         cg.comment       as group_comment,

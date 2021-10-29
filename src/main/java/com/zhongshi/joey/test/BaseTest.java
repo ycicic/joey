@@ -9,7 +9,6 @@ import com.zhongshi.joey.entity.ExecutionOrder;
 import com.zhongshi.joey.exception.JoeyException;
 import com.zhongshi.joey.mapper.CaseMapper;
 import io.qameta.allure.Allure;
-import io.qameta.allure.Step;
 import io.qameta.allure.model.Status;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
@@ -36,10 +35,10 @@ public class BaseTest {
     protected static final Queue<Case> CASE_QUEUE = new LinkedList<>();
     private static final Pattern PRE_PATTERN = Pattern.compile("^(\\$\\.)?([\\w.]*)(=|>|<|!=)\"(.*)\"$");
 
-    @BeforeSuite
+    @BeforeSuite(description = "前置准备")
     protected void caseLoading() {
-        Allure.step("测试套件执行前准备-装载测试用例至用例执行队列");
-        log.info("测试套件执行前准备-装载测试用例至用例执行队列");
+        Allure.step("装载测试用例至用例执行队列");
+        log.info("装载测试用例至用例执行队列");
         String workflowId = System.getProperty("workflowId");
 
         if (StringUtils.isEmpty(workflowId)) {
@@ -56,7 +55,7 @@ public class BaseTest {
         String orderStr = mapper.selectOrder(workflowId);
         List<ExecutionOrder> executionOrders = JSONArray.parseArray(orderStr, ExecutionOrder.class);
 
-        List<Case> cases = mapper.queryCaseByModule(workflowId);
+        List<Case> cases = mapper.queryCaseByWorkflowId(workflowId);
         Map<Long, Case> casesMap = cases.stream().collect(Collectors.toMap(Case::getCaseId, aCase -> aCase));
 
         Map<Long, Long> executionOrdersMap = executionOrders.stream().collect(Collectors.toMap(ExecutionOrder::getOrder, ExecutionOrder::getDetailId));
@@ -67,7 +66,10 @@ public class BaseTest {
             log.info("添加到执行队列[{}]：{}", order, aCase);
         });
 
-        Allure.step("用例执行队列装载完成-共需要执行" + CASE_QUEUE.size() + "条用例");
+        String groupModule = cases.get(0).getGroupModule();
+        Allure.description(groupModule);
+
+        Allure.step("用例执行队列装载完成，共需要执行" + CASE_QUEUE.size() + "条用例");
     }
 
     @SneakyThrows

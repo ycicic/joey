@@ -18,7 +18,7 @@ public interface CaseMapper {
      * @param workflowId 工作流ID
      * @return 要执行的case
      */
-    List<Case> queryCaseByModule(@Param("workflowId") String workflowId);
+    List<Case> queryCaseByWorkflowId(@Param("workflowId") String workflowId);
 
     /**
      * 通过workflowId查询节点执行顺序
