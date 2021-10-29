@@ -2,6 +2,7 @@ package com.zhongshi.joey.processor;
 
 import com.zhongshi.joey.entity.Case;
 import com.zhongshi.joey.utils.BuildDataUtil;
+import io.qameta.allure.Step;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CaseProcessorFacade {
 
+    @Step("执行用例：{0}")
     public String exec(Case testCase) {
         String requestData = BuildDataUtil.buildRequestData(testCase.getRequestData());
         testCase.setRequestData(requestData);

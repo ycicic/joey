@@ -8,6 +8,7 @@ import com.zhongshi.joey.entity.Case;
 import com.zhongshi.joey.entity.ExecutionOrder;
 import com.zhongshi.joey.exception.JoeyException;
 import com.zhongshi.joey.mapper.CaseMapper;
+import io.qameta.allure.Step;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.testng.Assert;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 import java.math.BigDecimal;
@@ -35,9 +34,10 @@ public class BaseTest {
     protected static final Queue<Case> CASE_QUEUE = new LinkedList<>();
     private static final Pattern PRE_PATTERN = Pattern.compile("^(\\$\\.)?([\\w.]*)(=|>|<|!=)\"(.*)\"$");
 
+    @Step("测试套件执行前准备-装载测试用例至用例执行队列")
     @BeforeSuite
     protected void caseLoading() {
-        log.info("测试套件执行前准备-装载测试用例");
+        log.info("测试套件执行前准备-装载测试用例至用例执行队列");
         String workflowId = System.getProperty("workflowId");
 
         if (StringUtils.isEmpty(workflowId)) {
@@ -74,48 +74,53 @@ public class BaseTest {
         JSONObject object = JSONObject.parseObject(exec);
         String[] preResult = preResults.split(";");
         for (String s : preResult) {
-            Matcher matcher = PRE_PATTERN.matcher(s);
-            if (matcher.find()) {
-                Object obj;
-                if (StringUtils.isNotEmpty(matcher.group(1))) {
-                    String[] keys = matcher.group(2).split("\\.");
-                    obj = object;
-                    for (String key : keys) {
-                        if (obj instanceof JSONObject) {
-                            obj = ((JSONObject) obj).get(key);
-                        } else {
-                            throw new Exception("类型不匹配");
-                        }
+            dataAssertion(object, s);
+        }
+    }
+
+    @Step("断言：{0} --> {1}")
+    private void dataAssertion(JSONObject object, String s) throws Exception {
+        Matcher matcher = PRE_PATTERN.matcher(s);
+        if (matcher.find()) {
+            Object obj;
+            if (StringUtils.isNotEmpty(matcher.group(1))) {
+                String[] keys = matcher.group(2).split("\\.");
+                obj = object;
+                for (String key : keys) {
+                    if (obj instanceof JSONObject) {
+                        obj = ((JSONObject) obj).get(key);
+                    } else {
+                        throw new Exception("类型不匹配");
                     }
-                } else {
-                    obj = matcher.group(2);
                 }
-
-                AssertType assertType = AssertType.getAssertType(matcher.group(3));
-                String value = matcher.group(4);
-
-                boolean flag = false;
-
-                switch (assertType) {
-                    case EQUAL:
-                        flag = obj.toString().equals(value);
-                        break;
-                    case UNEQUAL:
-                        flag = !obj.toString().equals(value);
-                        break;
-                    case LESS_THAN:
-                        flag = 0 > new BigDecimal(obj.toString()).compareTo(new BigDecimal(value));
-                        break;
-                    case MORE_THAN:
-                        flag = 0 < new BigDecimal(obj.toString()).compareTo(new BigDecimal(value));
-                        break;
-                    default:
-                        break;
-                }
-
-                String condition = matcher.group();
-                Assert.assertTrue(flag, "条件[" + condition + "]断言失败,参数实际值为：" + obj);
+            } else {
+                obj = matcher.group(2);
             }
+
+            AssertType assertType = AssertType.getAssertType(matcher.group(3));
+            String value = matcher.group(4);
+
+            boolean flag = false;
+
+            switch (assertType) {
+                case EQUAL:
+                    flag = obj.toString().equals(value);
+                    break;
+                case UNEQUAL:
+                    flag = !obj.toString().equals(value);
+                    break;
+                case LESS_THAN:
+                    flag = 0 > new BigDecimal(obj.toString()).compareTo(new BigDecimal(value));
+                    break;
+                case MORE_THAN:
+                    flag = 0 < new BigDecimal(obj.toString()).compareTo(new BigDecimal(value));
+                    break;
+                default:
+                    break;
+            }
+
+            String condition = matcher.group();
+            Assert.assertTrue(flag, "条件[" + condition + "]断言失败,参数实际值为：" + obj);
         }
     }
 

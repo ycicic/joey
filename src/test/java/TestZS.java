@@ -1,8 +1,5 @@
-import com.zhongshi.joey.entity.Case;
-import com.zhongshi.joey.entity.DataProviders;
 import com.zhongshi.joey.processor.CaseProcessorFacade;
 import com.zhongshi.joey.test.BaseTest;
-import io.qameta.allure.Step;
 import io.qameta.allure.Story;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.Test;
