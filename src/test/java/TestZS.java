@@ -21,12 +21,12 @@ public class TestZS extends BaseTest {
     public void automation() {
         AtomicInteger i = new AtomicInteger(1);
         CASE_QUEUE.forEach(testCase -> {
-            Allure.description(testCase.getGroupModule());
+            Allure.description(testCase.getGroupComment());
             Allure.story(testCase.getCaseComment());
             Allure.step("[" + i.getAndIncrement() + "] 开始执行用例: " + testCase.getCaseComment());
             log.info("开始执行：{}", testCase);
             String exec = new CaseProcessorFacade().exec(testCase);
-            Allure.step("执行结果：" + exec);
+            Allure.step("执行完成" );
             log.info("执行结果：{}", exec);
             assertCase(testCase.getPreResult(), exec);
         });
