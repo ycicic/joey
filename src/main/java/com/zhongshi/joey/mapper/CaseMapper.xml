@@ -32,9 +32,7 @@
         where cw.group_id = cg.id
         and cg.id = cd.group_id
         and cg.is_run = true
-        and cg.deleted = false
         and cd.is_run = true
-        and cd.deleted = false
         and cw.id = #{workflowId}
 
     </select>
