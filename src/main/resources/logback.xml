@@ -5,16 +5,15 @@
     <property name="log_path" value="log"/>
     <property name="CONSOLE_LOG_PATTERN"
               value="%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n"/>
-<!--              value="%date{yyyy-MM-dd HH:mm:ss.SSS} [%boldYellow(%thread)] %highlight(%-5level) %boldGreen(%logger) - %msg%n"/>-->
     <contextName>${app_name}</contextName>
     <!-- 控制台输出 -->
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="STDOUT" level="INFO" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
         </encoder>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="FILE" level="DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log_path}/${app_name}.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>60</maxHistory>
