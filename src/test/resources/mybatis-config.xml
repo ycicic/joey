@@ -12,7 +12,7 @@
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://rm-wz91i4o18pv1njdod.mysql.rds.aliyuncs.com:3306/joey?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=CONVERT_TO_NULL&amp;useSSL=false&amp;serverTimezone=CTT&amp;nullCatalogMeansCurrent=true"/>
+                <property name="url" value="jdbc:mysql://rm-wz91i4o18pv1njdod.mysql.rds.aliyuncs.com:3306/joey?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=CONVERT_TO_NULL&amp;useSSL=false&amp;serverTimezone=Asia/Shanghai&amp;nullCatalogMeansCurrent=true"/>
                 <property name="username" value="zhongshi"/>
                 <property name="password" value="BbW5ApetN"/>
             </dataSource>
